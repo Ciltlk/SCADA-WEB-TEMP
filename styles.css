@@ -1,0 +1,190 @@
+/* ================================
+   ESTILO GENERAL
+   ================================ */
+
+body {
+    background: #f1f3f7;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: left;
+    margin-bottom: 30px;
+    color: #1d3b70;
+    font-size: 28px;
+    letter-spacing: 1px;
+}
+
+
+/* ================================
+   GRID 2×3 PLATAFORMAS
+   ================================ */
+
+#plataformas {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+
+/* ================================
+   PLATAFORMAS
+   ================================ */
+
+.plataforma {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 10px 20px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.12);
+}
+
+.plataforma h2 {
+    text-align: center;
+    margin: 0 0 10px 0;
+    color: #333;
+    font-size: 18px;
+}
+
+
+/* ================================
+   FILAS DE CONTENEDORES
+   ================================ */
+
+.fila {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+
+/* ================================
+   TARJETAS (40×40)
+   ================================ */
+
+.card {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    padding: 1px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.2);
+
+    line-height: 8px;
+}
+
+/* C XX */
+.card .c-label {
+    font-size: 7px;
+    margin: 0;
+}
+
+/* Temperatura */
+.card .temp {
+    font-size: 7px;
+    margin: 0;
+}
+
+/* ONL */
+.card .ghs {
+    font-size: 6px;
+    opacity: 0.9;
+    margin: 0;
+}
+
+/* POTENCIA (NUEVO) */
+.card .pot {
+    font-size: 6px;
+    opacity: 0.9;
+    margin: 0;
+}
+
+
+/* ================================
+   TARJETAS FANTASMA
+   ================================ */
+
+.ghost-card {
+    width: 40px;
+    height: 40px;
+    background: transparent !important;
+    color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    pointer-events: none !important;
+}
+
+
+/* ================================
+   RESPONSIVE (MÓVIL)
+   ================================ */
+
+@media (max-width: 900px) {
+
+    #plataformas {
+        grid-template-columns: 1fr;
+    }
+
+    .plataforma {
+        width: 95%;
+        margin: 0 auto;
+    }
+
+    .fila {
+        flex-wrap: wrap;
+    }
+
+    .card {
+        width: 35px;
+        height: 35px;
+    }
+
+    .ghost-card {
+        width: 35px;
+        height: 35px;
+    }
+
+    .card .c-label {
+        font-size: 6px;
+    }
+    .card .temp {
+        font-size: 6px;
+    }
+    .card .ghs,
+    .card .pot {
+        font-size: 5px;
+    }
+}
+#ultima-lectura {
+    font-size: 16px;
+    color: #333;
+    background: #ffffff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-bottom: 15px;
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.15);
+}
+
+
+
+
+
+
+
+
+

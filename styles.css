@@ -64,14 +64,14 @@ h1 {
 
 
 /* ================================
-   TARJETAS (40×40)
+   TARJETAS (AUMENTADAS A 125%)
    ================================ */
 
 .card {
-    width: 40px;
-    height: 40px;
+    width: 50px;       /* 40px → 50px */
+    height: 50px;      /* 40px → 50px */
     border-radius: 6px;
-    padding: 1px;
+    padding: 2px;
 
     display: flex;
     flex-direction: column;
@@ -84,31 +84,31 @@ h1 {
 
     box-shadow: 0px 1px 3px rgba(0,0,0,0.2);
 
-    line-height: 8px;
+    line-height: 10px; /* ajustado para texto */
 }
 
 /* C XX */
 .card .c-label {
-    font-size: 7px;
+    font-size: 9px;   /* antes 7px */
     margin: 0;
 }
 
 /* Temperatura */
 .card .temp {
-    font-size: 7px;
+    font-size: 9px;   /* antes 7px */
     margin: 0;
 }
 
 /* ONL */
 .card .ghs {
-    font-size: 6px;
+    font-size: 8px;   /* antes 6px */
     opacity: 0.9;
     margin: 0;
 }
 
-/* POTENCIA (NUEVO) */
+/* POTENCIA */
 .card .pot {
-    font-size: 6px;
+    font-size: 8px;   /* antes 6px */
     opacity: 0.9;
     margin: 0;
 }
@@ -119,8 +119,8 @@ h1 {
    ================================ */
 
 .ghost-card {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     background: transparent !important;
     color: transparent !important;
     box-shadow: none !important;
@@ -148,27 +148,34 @@ h1 {
         flex-wrap: wrap;
     }
 
+    /* tarjetas 125% en móvil */
     .card {
-        width: 35px;
-        height: 35px;
+        width: 44px;     /* 35px × 1.25 */
+        height: 44px;
     }
 
     .ghost-card {
-        width: 35px;
-        height: 35px;
+        width: 44px;
+        height: 44px;
     }
 
     .card .c-label {
-        font-size: 6px;
+        font-size: 8px;  /* antes 6px */
     }
     .card .temp {
-        font-size: 6px;
+        font-size: 8px;
     }
     .card .ghs,
     .card .pot {
-        font-size: 5px;
+        font-size: 7px;  /* antes 5px */
     }
 }
+
+
+/* ================================
+   ÚLTIMA LECTURA
+   ================================ */
+
 #ultima-lectura {
     font-size: 16px;
     color: #333;
@@ -179,6 +186,8 @@ h1 {
     margin-bottom: 15px;
     box-shadow: 0px 2px 4px rgba(0,0,0,0.15);
 }
+
+
 
 
 

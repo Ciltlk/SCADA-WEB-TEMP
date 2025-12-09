@@ -5,7 +5,9 @@
 console.log("📌 APP.js cargado");
 
 // === CONFIGURACIÓN ===
-const CSV_URL = "dato.csv";
+// 🔥 LEER CSV DIRECTO DESDE GITHUB (SIN CACHE DE PAGES)
+const CSV_URL = "https://raw.githubusercontent.com/Ciltlk/SCADA-WEB-TEMP/main/dato.csv";
+
 const REFRESH_MS = 5000;
 const TOTAL_CONTENEDORES = 110;
 
@@ -32,6 +34,7 @@ function splitCSVLine(line, sep) {
     return result.map(s => s.trim());
 }
 
+// 🔥 FORZAR RECARGA REAL DEL CSV (NO CACHE)
 async function loadCSV() {
     try {
         const res = await fetch(`${CSV_URL}?t=${Date.now()}`, {
@@ -46,7 +49,6 @@ async function loadCSV() {
         return null;
     }
 }
-
 
 function parseCSV(text) {
     const rawLines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l);
@@ -81,7 +83,7 @@ function groupByContainerTakeLatest(rows) {
 
         const ghsRaw = r["ghscount"];
         const tempRaw = r["temperature_c"];
-        const potRaw  = r["potencia"];   // ← NUEVO
+        const potRaw  = r["potencia"];
 
         let cont = null;
         if (ip.includes(".")) {
@@ -95,7 +97,7 @@ function groupByContainerTakeLatest(rows) {
             timestamp_ms: Date.parse(ts) || 0,
             ghsCount: ghsRaw !== "" ? Number(ghsRaw) : NaN,
             temperature_c: tempRaw !== "" ? Number(tempRaw) : NaN,
-            potencia: potRaw !== "" ? Number(potRaw) : NaN     // ← NUEVO
+            potencia: potRaw !== "" ? Number(potRaw) : NaN
         };
 
         if (!map[cont] || entry.timestamp_ms >= map[cont].timestamp_ms)
@@ -167,7 +169,7 @@ function renderGrid(map) {
                 const d = map[cont];
                 const temp = d ? d.temperature_c : null;
                 const ghs  = d ? d.ghsCount : 0;
-                const pot  = d ? d.potencia  : null;   // ← NUEVO
+                const pot  = d ? d.potencia  : null;
 
                 const card = document.createElement("div");
                 card.className = "card";
@@ -177,7 +179,7 @@ function renderGrid(map) {
                     <div class="c-label">C ${cont}</div>
                     <div class="temp">${temp !== null && !isNaN(temp) ? temp.toFixed(1) + "°C" : "N/D"}</div>
                     <div class="ghs">${ghs} ONL</div>
-                    <div class="pot">${pot !== null && !isNaN(pot) ? pot + " kW" : ""}</div>   <!-- NUEVO -->
+                    <div class="pot">${pot !== null && !isNaN(pot) ? pot + " kW" : ""}</div>
                 `;
 
                 filaDiv.appendChild(card);
@@ -201,10 +203,8 @@ async function update() {
 
     // === OBTENER TIMESTAMP DE ÚLTIMA LECTURA ===
     if (rows.length > 1) {
-        // segunda línea (la 1 del array) es siempre el registro más reciente
         const ts = rows[1].timestamp ?? rows[1].time ?? "";
 
-        // Mostrarlo en la página
         const box = document.getElementById("ultima-lectura");
         if (box) {
             box.textContent = `Última lectura: ${ts}`;
@@ -214,6 +214,8 @@ async function update() {
 
 update();
 setInterval(update, REFRESH_MS);
+
+
 
 
 

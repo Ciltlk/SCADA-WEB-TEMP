@@ -34,14 +34,19 @@ function splitCSVLine(line, sep) {
 
 async function loadCSV() {
     try {
-        const res = await fetch(CSV_URL + "?cache=" + Date.now());
+        const res = await fetch(`${CSV_URL}?t=${Date.now()}`, {
+            cache: "no-store"
+        });
+
         const text = await res.text();
         return parseCSV(text);
+
     } catch (err) {
         console.error("❌ ERROR CSV:", err);
         return null;
     }
 }
+
 
 function parseCSV(text) {
     const rawLines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l);
@@ -209,5 +214,6 @@ async function update() {
 
 update();
 setInterval(update, REFRESH_MS);
+
 
 

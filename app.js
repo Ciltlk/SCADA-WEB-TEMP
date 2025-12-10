@@ -173,7 +173,14 @@ function renderGrid(map) {
 
                 const card = document.createElement("div");
                 card.className = "card";
-                card.style.background = tempToColor(temp);
+                const bg = tempToColor(temp);
+                card.style.background = bg;
+
+                // si el fondo es amarillo → texto negro
+                if (bg === "#f8e71c") {
+                card.classList.add("dark-text");
+                }
+
 
                 card.innerHTML = `
                     <div class="c-label">C ${cont}</div>
@@ -214,6 +221,7 @@ async function update() {
 
 update();
 setInterval(update, REFRESH_MS);
+
 
 
 

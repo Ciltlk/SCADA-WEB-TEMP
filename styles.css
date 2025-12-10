@@ -68,8 +68,8 @@ h1 {
    ================================ */
 
 .card {
-    width: 50px;       /* 40px → 50px */
-    height: 50px;      /* 40px → 50px */
+    width: 50px;
+    height: 50px;
     border-radius: 6px;
     padding: 2px;
 
@@ -84,31 +84,35 @@ h1 {
 
     box-shadow: 0px 1px 3px rgba(0,0,0,0.2);
 
-    line-height: 10px; /* ajustado para texto */
+    line-height: 10px;
 }
 
-/* C XX */
-.card .c-label {
-    font-size: 9px;   /* antes 7px */
-    margin: 0;
-}
-
-/* Temperatura */
-.card .temp {
-    font-size: 9px;   /* antes 7px */
-    margin: 0;
-}
-
-/* ONL */
-.card .ghs {
-    font-size: 8px;   /* antes 6px */
-    opacity: 0.9;
-    margin: 0;
-}
-
-/* POTENCIA */
+/* ================================
+   TEXTOS CON BORDE NEGRO
+   ================================ */
+/*
+.card .c-label,
+.card .temp,
+.card .ghs,
 .card .pot {
-    font-size: 8px;   /* antes 6px */
+    -webkit-text-stroke: 0.1px #000;
+    text-stroke: 0.8px #000;
+} */
+
+/* Tamaños de texto */
+.card .c-label {
+    font-size: 9px;
+    margin: 0;
+}
+
+.card .temp {
+    font-size: 9px;
+    margin: 0;
+}
+
+.card .ghs,
+.card .pot {
+    font-size: 8px;
     opacity: 0.9;
     margin: 0;
 }
@@ -148,9 +152,8 @@ h1 {
         flex-wrap: wrap;
     }
 
-    /* tarjetas 125% en móvil */
     .card {
-        width: 44px;     /* 35px × 1.25 */
+        width: 44px;
         height: 44px;
     }
 
@@ -159,15 +162,14 @@ h1 {
         height: 44px;
     }
 
-    .card .c-label {
-        font-size: 8px;  /* antes 6px */
-    }
+    .card .c-label,
     .card .temp {
         font-size: 8px;
     }
+
     .card .ghs,
     .card .pot {
-        font-size: 7px;  /* antes 5px */
+        font-size: 7px;
     }
 }
 
@@ -186,6 +188,17 @@ h1 {
     margin-bottom: 15px;
     box-shadow: 0px 2px 4px rgba(0,0,0,0.15);
 }
+.dark-text {
+    color: #4A4A4A !important;
+}
+
+.dark-text .c-label,
+.dark-text .temp,
+.dark-text .ghs,
+.dark-text .pot {
+    color: #4A4A4A !important;
+}
+
 
 
 

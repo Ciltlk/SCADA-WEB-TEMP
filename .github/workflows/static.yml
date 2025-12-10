@@ -6,7 +6,7 @@ on:
     branches: ["main"]
     paths-ignore:
       - "dato.csv"        # ⛔ NO activar deploy cuando solo cambia el CSV
-      - "*.csv"           # (opcional) ignora cualquier CSV
+               # (opcional) ignora cualquier CSV
   workflow_dispatch:        # Permite ejecutarlo manualmente
 
 permissions:

@@ -5,7 +5,6 @@
 console.log("📌 APP.js cargado");
 
 // === CONFIGURACIÓN ===
-// 🔥 LEER CSV DIRECTO DESDE GITHUB (SIN CACHE DE PAGES)
 const CSV_URL = "https://raw.githubusercontent.com/Ciltlk/SCADA-WEB-TEMP/main/dato.csv";
 
 const REFRESH_MS = 5000;
@@ -34,16 +33,14 @@ function splitCSVLine(line, sep) {
     return result.map(s => s.trim());
 }
 
-// 🔥 FORZAR RECARGA REAL DEL CSV (NO CACHE)
+// === CARGA CSV SIN CACHE ===
 async function loadCSV() {
     try {
         const res = await fetch(`${CSV_URL}?t=${Date.now()}`, {
             cache: "no-store"
         });
-
         const text = await res.text();
         return parseCSV(text);
-
     } catch (err) {
         console.error("❌ ERROR CSV:", err);
         return null;
@@ -80,7 +77,6 @@ function groupByContainerTakeLatest(rows) {
 
         const ts = r["timestamp"] ?? r["time"] ?? "";
         const ip = r["ip"] ?? "";
-
         const ghsRaw = r["ghscount"];
         const tempRaw = r["temperature_c"];
         const potRaw  = r["potencia"];
@@ -122,8 +118,6 @@ function tempToColor(t) {
     return "#f44336";
 }
 
-// === LAYOUT FIJO ===
-
 const LAYOUT_PLATAFORMAS = {
     1: [[7,8,9,10,11,12],[1,2,3,4,5,6]],
     2: [[19,20,21,22,23,24,"ghost","ghost","ghost","ghost","ghost","ghost"],[13,14,15,16,17,18,25,26,27,28,29,30]],
@@ -133,7 +127,7 @@ const LAYOUT_PLATAFORMAS = {
     6: [[103,104,105,106,107,108,109,110],[95,96,97,98,99,100,101,102]]
 };
 
-// === RENDER ===
+// === RENDER DE TARJETAS ===
 
 function renderGrid(map) {
 
@@ -176,11 +170,11 @@ function renderGrid(map) {
                 const bg = tempToColor(temp);
                 card.style.background = bg;
 
-                // si el fondo es amarillo → texto negro
-                if (bg === "#f8e71c") {
-                card.classList.add("dark-text");
-                }
+                if (bg === "#f8e71c") card.classList.add("dark-text");
 
+                // === TARJETA CLICKEABLE ===
+                card.style.cursor = "pointer";
+                card.onclick = () => window.open(`http://10.160.${cont}.251/`, "_blank");
 
                 card.innerHTML = `
                     <div class="c-label">C ${cont}</div>
@@ -208,19 +202,16 @@ async function update() {
     const map = groupByContainerTakeLatest(rows);
     renderGrid(map);
 
-    // === OBTENER TIMESTAMP DE ÚLTIMA LECTURA ===
     if (rows.length > 1) {
         const ts = rows[1].timestamp ?? rows[1].time ?? "";
-
         const box = document.getElementById("ultima-lectura");
-        if (box) {
-            box.textContent = `Última lectura: ${ts}`;
-        }
+        if (box) box.textContent = `Última lectura: ${ts}`;
     }
 }
 
 update();
 setInterval(update, REFRESH_MS);
+
 
 
 

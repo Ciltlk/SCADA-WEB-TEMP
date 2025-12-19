@@ -4,17 +4,13 @@ name: Deploy static content to Pages
 on:
   push:
     branches: ["main"]
-    paths-ignore:
-      - "dato.csv"        # ⛔ NO activar deploy cuando solo cambia el CSV
-               # (opcional) ignora cualquier CSV
-  workflow_dispatch:        # Permite ejecutarlo manualmente
+  workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Evita colas infinitas: ejecuta solo el último deploy
 concurrency:
   group: "pages-deploy"
   cancel-in-progress: true
@@ -41,4 +37,5 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
 

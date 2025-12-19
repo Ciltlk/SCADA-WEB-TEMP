@@ -5,7 +5,8 @@
 console.log("📌 APP.js cargado");
 
 // === CONFIGURACIÓN ===
-const CSV_URL = "https://raw.githubusercontent.com/Ciltlk/SCADA-WEB-TEMP/main/dato.csv";
+// ⬇️ IMPORTANTE: se carga desde GitHub Pages, no RAW
+const CSV_URL = "dato.csv";
 
 const REFRESH_MS = 5000;
 const TOTAL_CONTENEDORES = 110;
@@ -33,12 +34,10 @@ function splitCSVLine(line, sep) {
     return result.map(s => s.trim());
 }
 
-// === CARGA CSV SIN CACHE ===
+// === CARGA CSV (GITHUB PAGES, cache-busting simple) ===
 async function loadCSV() {
     try {
-        const res = await fetch(`${CSV_URL}?t=${Date.now()}`, {
-            cache: "no-store"
-        });
+        const res = await fetch(CSV_URL + "?cache=" + Date.now());
         const text = await res.text();
         return parseCSV(text);
     } catch (err) {
@@ -120,11 +119,16 @@ function tempToColor(t) {
 
 const LAYOUT_PLATAFORMAS = {
     1: [[7,8,9,10,11,12],[1,2,3,4,5,6]],
-    2: [[19,20,21,22,23,24,"ghost","ghost","ghost","ghost","ghost","ghost"],[13,14,15,16,17,18,25,26,27,28,29,30]],
-    3: [[43,44,45,46,47,48,49,50,51,52,53,54],[31,32,33,34,35,36,37,38,39,40,41,42]],
-    4: [[67,68,69,70,71,72,73,74,75,76,77,78],[55,56,57,58,59,60,61,62,63,64,65,66]],
-    5: [[87,88,89,90,91,92,93,94],[79,80,81,82,83,84,85,86]],
-    6: [[103,104,105,106,107,108,109,110],[95,96,97,98,99,100,101,102]]
+    2: [[19,20,21,22,23,24,"ghost","ghost","ghost","ghost","ghost","ghost"],
+        [13,14,15,16,17,18,25,26,27,28,29,30]],
+    3: [[43,44,45,46,47,48,49,50,51,52,53,54],
+        [31,32,33,34,35,36,37,38,39,40,41,42]],
+    4: [[67,68,69,70,71,72,73,74,75,76,77,78],
+        [55,56,57,58,59,60,61,62,63,64,65,66]],
+    5: [[87,88,89,90,91,92,93,94],
+        [79,80,81,82,83,84,85,86]],
+    6: [[103,104,105,106,107,108,109,110],
+        [95,96,97,98,99,100,101,102]]
 };
 
 // === RENDER DE TARJETAS ===
@@ -172,7 +176,6 @@ function renderGrid(map) {
 
                 if (bg === "#f8e71c") card.classList.add("dark-text");
 
-                // === TARJETA CLICKEABLE ===
                 card.style.cursor = "pointer";
                 card.onclick = () => window.open(`http://10.160.${cont}.251/`, "_blank");
 
@@ -211,6 +214,8 @@ async function update() {
 
 update();
 setInterval(update, REFRESH_MS);
+
+
 
 
 

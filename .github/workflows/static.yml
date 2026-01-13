@@ -4,6 +4,8 @@ name: Deploy static content to Pages
 on:
   push:
     branches: ["main"]
+    paths-ignore:
+      - "dato.csv"   # ✅ NO reconstruir Pages cuando solo cambia el CSV
   workflow_dispatch:
 
 permissions:
@@ -11,6 +13,7 @@ permissions:
   pages: write
   id-token: write
 
+# Evita colas infinitas, pero ahora SIN cancelar por CSV
 concurrency:
   group: "pages-deploy"
   cancel-in-progress: true

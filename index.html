@@ -7,16 +7,34 @@
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+
+<div class="header-bar">
     <h1>MAPA DE CALOR DEL SITIO VALENZUELA</h1>
+
+    <div class="header-cards">
+        <!-- Tarjeta Potencia Total -->
+        <div id="total-potencia" class="potencia-total potencia-azul">
+            <div class="pot-title">Potencia Total</div>
+            <div class="pot-value">-- MW</div>
+        </div>
+
+        <!-- Tarjeta Máquinas Online -->
+        <div id="total-online" class="potencia-total potencia-azul">
+            <div class="pot-title">Máquinas Online</div>
+            <div class="pot-value">--</div>
+        </div>
+    </div>
+</div>
+
+    </div>
 
     <div id="ultima-lectura"></div>
 
     <!-- Contenedor principal de todas las plataformas -->
        <div id="plataformas" class="bloque"></div>
 
-
-
     <!-- JS al final del body para que el DOM ya exista -->
     <script src="app.js"></script>
 </body>
 </html>
+

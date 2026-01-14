@@ -68,7 +68,7 @@ function parseCSV(text) {
     return rows;
 }
 
-// === AGRUPACIÓN POR CONTENEDOR ===
+// === AGRUPACIÓN POR CONTENEDOR (LATEST) ===
 
 function groupByContainerTakeLatest(rows) {
     const map = {};
@@ -102,7 +102,7 @@ function groupByContainerTakeLatest(rows) {
     return map;
 }
 
-// === COLORES ===
+// === COLORES TEMPERATURA ===
 
 function tempToColor(t) {
     if (t === null || isNaN(t)) return "#666";
@@ -116,6 +116,8 @@ function tempToColor(t) {
     if (t < 40) return "#F69529";
     return "#f44336";
 }
+
+// === LAYOUT ===
 
 const LAYOUT_PLATAFORMAS = {
     1: [[7,8,9,10,11,12],[1,2,3,4,5,6]],
@@ -131,7 +133,7 @@ const LAYOUT_PLATAFORMAS = {
         [95,96,97,98,99,100,101,102]]
 };
 
-// === RENDER DE TARJETAS ===
+// === RENDER MAPA ===
 
 function renderGrid(map) {
 
@@ -143,7 +145,6 @@ function renderGrid(map) {
     ORDER.forEach(numPlat => {
 
         const filas = LAYOUT_PLATAFORMAS[numPlat];
-
         const platDiv = document.createElement("div");
         platDiv.className = "plataforma";
 
@@ -196,13 +197,73 @@ function renderGrid(map) {
     });
 }
 
-// === LOOP ===
+// ================================
+// POTENCIA TOTAL (kW → MW)
+// ================================
+
+function updatePotenciaTotal(map) {
+    let totalKW = 0;
+
+    for (let i = 1; i <= TOTAL_CONTENEDORES; i++) {
+        const d = map[i];
+        if (!d) continue;
+
+        const pot = d.potencia;
+        if (pot !== null && !isNaN(pot)) {
+            totalKW += pot;
+        }
+    }
+
+    const totalMW = totalKW / 1000;
+
+    const card = document.getElementById("total-potencia");
+    if (!card) return;
+
+    const value = card.querySelector(".pot-value");
+    if (value) value.textContent = totalMW.toFixed(2) + " MW";
+
+    card.classList.remove("potencia-azul","potencia-verde","potencia-rojo");
+
+    if (totalMW < 98) card.classList.add("potencia-azul");
+    else if (totalMW <= 102) card.classList.add("potencia-verde");
+    else card.classList.add("potencia-rojo");
+}
+
+// ================================
+// TOTAL DE MÁQUINAS ONLINE (Σ ghsCount)
+// ================================
+
+function updateMaquinasOnline(map) {
+    let totalOnline = 0;
+
+    for (let i = 1; i <= TOTAL_CONTENEDORES; i++) {
+        const d = map[i];
+        if (!d) continue;
+
+        const ghs = d.ghsCount;
+        if (ghs !== null && !isNaN(ghs)) {
+            totalOnline += ghs;
+        }
+    }
+
+    const card = document.getElementById("total-online");
+    if (!card) return;
+
+    const value = card.querySelector(".pot-value");
+    if (value) value.textContent = totalOnline.toLocaleString("es-ES");
+}
+
+// === LOOP PRINCIPAL ===
 
 async function update() {
     const rows = await loadCSV();
     if (!rows) return;
 
     const map = groupByContainerTakeLatest(rows);
+
+    updatePotenciaTotal(map);
+    updateMaquinasOnline(map);
+
     renderGrid(map);
 
     if (rows.length > 1) {
@@ -214,6 +275,7 @@ async function update() {
 
 update();
 setInterval(update, REFRESH_MS);
+
 
 
 

@@ -1,4 +1,65 @@
 /* ================================
+   HEADER (TÍTULO + TARJETA POTENCIA)
+   ================================ */
+
+.header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    max-width: 1500px;
+    margin: 0 auto 10px auto;
+}
+
+/* Evita que el h1 empuje todo hacia abajo */
+.header-bar h1 {
+    margin-bottom: 0;
+}
+
+/* ================================
+   TARJETA POTENCIA TOTAL
+   ================================ */
+
+.potencia-total {
+    min-width: 220px;
+    padding: 10px 14px;
+    border-radius: 12px;
+
+    color: #ffffff;
+    text-align: center;
+    font-family: Arial, sans-serif;
+
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+}
+
+.potencia-total .pot-title {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.potencia-total .pot-value {
+    font-size: 26px;
+    font-weight: bold;
+    margin-top: 4px;
+}
+
+/* Estados de color */
+.potencia-azul  { background: #1e88e5; }
+.potencia-verde { background: #2e7d32; }
+.potencia-rojo  { background: #c62828; }
+
+/* ================================
+   RESPONSIVE HEADER
+   ================================ */
+
+@media (max-width: 900px) {
+    .header-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+/* ================================
    ESTILO GENERAL
    ================================ */
 
@@ -198,6 +259,78 @@ h1 {
 .dark-text .pot {
     color: #4A4A4A !important;
 }
+/* ================================
+   HEADER + TARJETAS KPI
+   ================================ */
+
+.header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto 10px auto;
+}
+
+/* contenedor de tarjetas */
+.header-cards {
+    display: flex;
+    gap: 12px;
+}
+
+/* evita que el h1 rompa el layout */
+.header-bar h1 {
+    margin-bottom: 0;
+    flex: 1;
+}
+
+/* tarjeta tipo KPI */
+.potencia-total {
+    min-width: 200px;
+    padding: 12px 16px;
+    border-radius: 12px;
+
+    color: #ffffff;
+    text-align: center;
+
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+}
+
+/* textos internos */
+.potencia-total .pot-title {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.potencia-total .pot-value {
+    font-size: 26px;
+    font-weight: bold;
+    margin-top: 4px;
+}
+
+/* colores */
+.potencia-azul  { background: #1e88e5; }
+.potencia-verde { background: #2e7d32; }
+.potencia-rojo  { background: #c62828; }
+
+/* responsive */
+@media (max-width: 900px) {
+    .header-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-cards {
+        width: 100%;
+    }
+
+    .potencia-total {
+        width: 100%;
+    }
+}
+
 
 
 

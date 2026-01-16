@@ -8,27 +8,33 @@
 </head>
 <body>
 
-<div class="header-bar">
-    <h1>MAPA DE CALOR DEL SITIO VALENZUELA</h1>
+<div class="top-bar">
 
-    <div class="header-cards">
-        <!-- Tarjeta Potencia Total -->
-        <div id="total-potencia" class="potencia-total potencia-azul">
+    <!-- IZQUIERDA: Título + última lectura -->
+    <div class="top-left">
+        <h1>MAPA DE CALOR DEL SITIO VALENZUELA</h1>
+        <div id="ultima-lectura"></div>
+    </div>
+
+    <!-- DERECHA: tarjetas KPI -->
+    <div class="top-right header-cards">
+        <div id="total-potencia" class="potencia-total potencia-verde">
             <div class="pot-title">Potencia Total</div>
             <div class="pot-value">-- MW</div>
         </div>
 
-        <!-- Tarjeta Máquinas Online -->
         <div id="total-online" class="potencia-total potencia-azul">
             <div class="pot-title">Máquinas Online</div>
             <div class="pot-value">--</div>
         </div>
+
+        <div id="total-modulados" class="potencia-total potencia-azul">
+            <div class="pot-title">Miners Modulados</div>
+            <div class="pot-value">--</div>
+        </div>
     </div>
+
 </div>
-
-    </div>
-
-    <div id="ultima-lectura"></div>
 
     <!-- Contenedor principal de todas las plataformas -->
        <div id="plataformas" class="bloque"></div>
@@ -37,4 +43,6 @@
     <script src="app.js"></script>
 </body>
 </html>
+
+
 

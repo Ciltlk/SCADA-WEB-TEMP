@@ -77,6 +77,7 @@ function groupByContainerTakeLatest(rows) {
         const ts = r["timestamp"] ?? r["time"] ?? "";
         const ip = r["ip"] ?? "";
         const ghsRaw = r["ghscount"];
+        const ghsModRaw = r["ghsmod"];
         const tempRaw = r["temperature_c"];
         const potRaw  = r["potencia"];
 
@@ -91,6 +92,7 @@ function groupByContainerTakeLatest(rows) {
             contenedor: cont,
             timestamp_ms: Date.parse(ts) || 0,
             ghsCount: ghsRaw !== "" ? Number(ghsRaw) : NaN,
+            ghsMod: ghsModRaw !== "" ? Number(ghsModRaw) : NaN,
             temperature_c: tempRaw !== "" ? Number(tempRaw) : NaN,
             potencia: potRaw !== "" ? Number(potRaw) : NaN
         };
@@ -168,6 +170,7 @@ function renderGrid(map) {
                 const d = map[cont];
                 const temp = d ? d.temperature_c : null;
                 const ghs  = d ? d.ghsCount : 0;
+                const mod  = d ? d.ghsMod : 0;
                 const pot  = d ? d.potencia  : null;
 
                 const card = document.createElement("div");
@@ -184,6 +187,7 @@ function renderGrid(map) {
                     <div class="c-label">C ${cont}</div>
                     <div class="temp">${temp !== null && !isNaN(temp) ? temp.toFixed(1) + "°C" : "N/D"}</div>
                     <div class="ghs">${ghs} ONL</div>
+                    <div class="mod"> MOD: ${mod}</div>
                     <div class="pot">${pot !== null && !isNaN(pot) ? pot + " kW" : ""}</div>
                 `;
 
@@ -220,7 +224,7 @@ function updatePotenciaTotal(map) {
     if (!card) return;
 
     const value = card.querySelector(".pot-value");
-    if (value) value.textContent = totalMW.toFixed(2) + " MW";
+    if (value) value.textContent = totalMW.toFixed(1) + " MW";
 
     card.classList.remove("potencia-azul","potencia-verde","potencia-rojo");
 
@@ -252,6 +256,32 @@ function updateMaquinasOnline(map) {
     const value = card.querySelector(".pot-value");
     if (value) value.textContent = totalOnline.toLocaleString("es-ES");
 }
+// ================================
+// TOTAL DE MINERS MODULADOS (Σ ghsMod)
+// ================================
+
+function updateMinersModulados(map) {
+    let totalMod = 0;
+
+    for (let i = 1; i <= TOTAL_CONTENEDORES; i++) {
+        const d = map[i];
+        if (!d) continue;
+
+        const mod = d.ghsMod;
+        if (mod !== null && !isNaN(mod)) {
+            totalMod += mod;
+        }
+    }
+
+    const card = document.getElementById("total-modulados");
+    if (!card) return;
+
+    const value = card.querySelector(".pot-value");
+    if (value) {
+        value.textContent = totalMod.toLocaleString("es-ES");
+    }
+}
+
 
 // === LOOP PRINCIPAL ===
 
@@ -263,7 +293,7 @@ async function update() {
 
     updatePotenciaTotal(map);
     updateMaquinasOnline(map);
-
+    updateMinersModulados(map);
     renderGrid(map);
 
     if (rows.length > 1) {

@@ -330,6 +330,83 @@ h1 {
         width: 100%;
     }
 }
+/* ================================
+   TEXTO MODULADOS (MOD)
+   ================================ */
+
+.card .mod {
+    font-size: 7px;       /* apenas más chico que ONL */
+    opacity: 0.85;
+    margin: 0;
+}
+/* ================================
+   TOP BAR (HEADER PRINCIPAL)
+   ================================ */
+
+.top-bar {
+    display: flex;
+    align-items: stretch;   /* 🔑 misma altura */
+    justify-content: space-between;
+    gap: 20px;
+
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto 20px auto;
+}
+
+/* Lado izquierdo */
+.top-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* centra verticalmente */
+}
+
+.top-left h1 {
+    margin: 0;
+}
+
+#ultima-lectura {
+    margin-top: 8px;
+}
+.top-right {
+    display: flex;
+    align-items: stretch;   /* 🔑 mismas alturas */
+}
+
+.header-cards {
+    display: flex;
+    gap: 12px;
+}
+
+.potencia-total {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+@media (max-width: 900px) {
+
+    .top-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .top-left {
+        align-items: flex-start;
+    }
+
+    .header-cards {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .potencia-total {
+        width: 100%;
+        min-width: unset;
+    }
+}
+
+
+
 
 
 

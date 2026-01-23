@@ -4,6 +4,83 @@
 
 console.log("📌 APP.js cargado");
 
+// === AUTENTICACIÓN ===
+let VALID_USERS = {};
+
+// Cargar credenciales desde archivo generado (inyectado por GitHub Actions)
+async function loadCredentials() {
+    try {
+        // Cargar dinámicamente el script de credenciales
+        const script = document.createElement('script');
+        script.src = 'credentials.js?cache=' + Date.now();
+        document.head.appendChild(script);
+        
+        // Esperar a que se cargue
+        await new Promise(resolve => {
+            script.onload = resolve;
+            setTimeout(resolve, 1000); // Timeout de seguridad
+        });
+        
+        // Las credenciales se cargan en window.SCADA_CREDENTIALS
+        VALID_USERS = window.SCADA_CREDENTIALS?.users || {};
+        
+        if (Object.keys(VALID_USERS).length === 0) {
+            console.warn("⚠️ No se encontraron credenciales. Usando credenciales por defecto.");
+            VALID_USERS = { "admin": "admin123", "user": "user2026" };
+        }
+    } catch (err) {
+        console.error("❌ Error cargando credenciales:", err);
+        // Fallback si falla la carga
+        VALID_USERS = { "admin": "admin123", "user": "user2026" };
+    }
+    
+    setupAuthSystem();
+}
+
+function setupAuthSystem() {
+    const loginForm = document.getElementById("login-form");
+    const logoutBtn = document.getElementById("logout-btn");
+    
+    // Verificar si ya hay sesión activa
+    if (localStorage.getItem("scada_logged_in") === "true") {
+        showMainContent();
+    } else {
+        document.getElementById("login-modal").style.display = "flex";
+    }
+    
+    // Evento de login
+    loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        
+        if (VALID_USERS[username] && VALID_USERS[username] === password) {
+            localStorage.setItem("scada_logged_in", "true");
+            localStorage.setItem("scada_user", username);
+            document.getElementById("login-error").textContent = "";
+            showMainContent();
+        } else {
+            document.getElementById("login-error").textContent = "❌ Usuario o contraseña incorrectos";
+            document.getElementById("password").value = "";
+        }
+    });
+    
+    // Evento de logout
+    logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("scada_logged_in");
+        localStorage.removeItem("scada_user");
+        document.getElementById("login-modal").style.display = "flex";
+        document.getElementById("login-form").reset();
+        document.getElementById("login-error").textContent = "";
+        document.getElementById("main-content").style.display = "none";
+    });
+}
+
+function showMainContent() {
+    document.getElementById("login-modal").style.display = "none";
+    document.getElementById("main-content").style.display = "block";
+}
+
 // === CONFIGURACIÓN ===
 // ⬇️ IMPORTANTE: se carga desde GitHub Pages, no RAW
 const CSV_URL = "dato.csv";
@@ -80,6 +157,7 @@ function groupByContainerTakeLatest(rows) {
         const ghsModRaw = r["ghsmod"];
         const tempRaw = r["temperature_c"];
         const potRaw  = r["potencia"];
+        const hashRaw = r["hashrate_ph"];
 
         let cont = null;
         if (ip.includes(".")) {
@@ -94,7 +172,8 @@ function groupByContainerTakeLatest(rows) {
             ghsCount: ghsRaw !== "" ? Number(ghsRaw) : NaN,
             ghsMod: ghsModRaw !== "" ? Number(ghsModRaw) : NaN,
             temperature_c: tempRaw !== "" ? Number(tempRaw) : NaN,
-            potencia: potRaw !== "" ? Number(potRaw) : NaN
+            potencia: potRaw !== "" ? Number(potRaw) : NaN,
+            hashrate_ph: hashRaw !== "" ? Number(hashRaw) : NaN
         };
 
         if (!map[cont] || entry.timestamp_ms >= map[cont].timestamp_ms)
@@ -185,11 +264,12 @@ function renderGrid(map) {
 
                 card.innerHTML = `
                     <div class="c-label">C ${cont}</div>
-                    <div class="temp">${temp !== null && !isNaN(temp) ? temp.toFixed(1) + "°C" : "N/D"}</div>
-                    <div class="ghs">${ghs} ONL</div>
-                    <div class="mod"> MOD: ${mod}</div>
-                    <div class="pot">${pot !== null && !isNaN(pot) ? pot + " kW" : ""}</div>
-                `;
+                    <div class="temp field-temp">${temp !== null && !isNaN(temp) ? temp.toFixed(1) + "°C" : "N/D"}</div>
+                    <div class="ghs field-ghs">${ghs} ONL</div>
+                    <div class="mod field-mod">MOD: ${mod}</div>
+                    <div class="pot field-pot">${pot !== null && !isNaN(pot) ? pot + " kW" : ""}</div>
+`               ;
+
 
                 filaDiv.appendChild(card);
             });
@@ -198,6 +278,30 @@ function renderGrid(map) {
         });
 
         root.appendChild(platDiv);
+    });
+}
+// ================================
+// FILTROS
+// ================================
+
+function applyFieldFilters() {
+    const checks = document.querySelectorAll('#filters input[type="checkbox"]');
+
+    checks.forEach(chk => {
+        const field = chk.dataset.field;
+        const visible = chk.checked;
+
+        document.querySelectorAll(`.field-${field}`).forEach(el => {
+            el.style.display = visible ? "" : "none";
+        });
+    });
+}
+
+function setupFilterListeners() {
+    const checks = document.querySelectorAll('#filters input[type="checkbox"]');
+    
+    checks.forEach(chk => {
+        chk.addEventListener("change", applyFieldFilters);
     });
 }
 
@@ -282,6 +386,33 @@ function updateMinersModulados(map) {
     }
 }
 
+// ================================
+// HASHRATE TOTAL (Σ hashrate_ph)
+// ================================
+
+function updateHashrateTotal(map) {
+    let totalHashrate = 0;
+
+    for (let i = 1; i <= TOTAL_CONTENEDORES; i++) {
+        const d = map[i];
+        if (!d) continue;
+
+        const hash = d.hashrate_ph;
+        if (hash !== null && !isNaN(hash)) {
+            totalHashrate += hash;
+        }
+    }
+
+    // Convertir de Terahash (TH) a Exahash (EH): 1 EH = 1,000,000 TH
+    const totalEH = totalHashrate / 1000000;
+
+    const card = document.getElementById("total-hashrate");
+    if (!card) return;
+
+    const value = card.querySelector(".pot-value");
+    if (value) value.textContent = totalEH.toFixed(2) + " EH/s";
+}
+
 
 // === LOOP PRINCIPAL ===
 
@@ -294,7 +425,9 @@ async function update() {
     updatePotenciaTotal(map);
     updateMaquinasOnline(map);
     updateMinersModulados(map);
+    updateHashrateTotal(map);
     renderGrid(map);
+    applyFieldFilters();
 
     if (rows.length > 1) {
         const ts = rows[1].timestamp ?? rows[1].time ?? "";
@@ -303,8 +436,17 @@ async function update() {
     }
 }
 
-update();
-setInterval(update, REFRESH_MS);
+// Inicializar autenticación (cargar credenciales primero)
+loadCredentials();
+
+// Actualizar solo si está logueado
+if (localStorage.getItem("scada_logged_in") === "true") {
+    update();
+    setupFilterListeners();
+    setInterval(update, REFRESH_MS);
+}
+
+
 
 
 

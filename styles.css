@@ -1,65 +1,4 @@
 /* ================================
-   HEADER (TÍTULO + TARJETA POTENCIA)
-   ================================ */
-
-.header-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-
-    max-width: 1500px;
-    margin: 0 auto 10px auto;
-}
-
-/* Evita que el h1 empuje todo hacia abajo */
-.header-bar h1 {
-    margin-bottom: 0;
-}
-
-/* ================================
-   TARJETA POTENCIA TOTAL
-   ================================ */
-
-.potencia-total {
-    min-width: 220px;
-    padding: 10px 14px;
-    border-radius: 12px;
-
-    color: #ffffff;
-    text-align: center;
-    font-family: Arial, sans-serif;
-
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
-}
-
-.potencia-total .pot-title {
-    font-size: 14px;
-    opacity: 0.9;
-}
-
-.potencia-total .pot-value {
-    font-size: 26px;
-    font-weight: bold;
-    margin-top: 4px;
-}
-
-/* Estados de color */
-.potencia-azul  { background: #1e88e5; }
-.potencia-verde { background: #2e7d32; }
-.potencia-rojo  { background: #c62828; }
-
-/* ================================
-   RESPONSIVE HEADER
-   ================================ */
-
-@media (max-width: 900px) {
-    .header-bar {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-}
-/* ================================
    ESTILO GENERAL
    ================================ */
 
@@ -71,16 +10,123 @@ body {
 }
 
 h1 {
-    text-align: left;
-    margin-bottom: 30px;
     color: #1d3b70;
     font-size: 28px;
     letter-spacing: 1px;
+    margin: 0;
 }
 
+/* ================================
+   TOP BAR (HEADER PRINCIPAL)
+   ================================ */
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* 🔑 NO estira las KPI */
+    gap: 20px;
+
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto 20px auto;
+}
+
+/* LADO IZQUIERDO: título + lectura + filtros */
+.top-left {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Última lectura */
+#ultima-lectura {
+    margin-top: 8px;
+    font-size: 16px;
+    color: #333;
+    background: #ffffff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    display: inline-block;
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.15);
+}
 
 /* ================================
-   GRID 2×3 PLATAFORMAS
+   TARJETAS KPI (HEADER)
+   ================================ */
+
+.top-right {
+    display: flex;
+    align-items: flex-start; /* 🔑 */
+}
+
+/* Contenedor KPI */
+.header-cards {
+    display: flex;                 /* 🔑 fila horizontal en desktop */
+    flex-direction: row;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+/* Tarjeta KPI */
+.potencia-total {
+    min-width: 120px;
+    min-height: 40px;  /* altura mínima, crece si es necesario */
+    
+    padding: 8px 12px;
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    color: #ffffff;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+}
+
+.potencia-total .pot-title {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.potencia-total .pot-value {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.1;
+}
+
+/* Colores KPI */
+.potencia-azul  { background: #1e88e5; }
+.potencia-verde { background: #2e7d32; }
+.potencia-rojo  { background: #c62828; }
+
+/* ================================
+   FILTRO DE VARIABLES
+   ================================ */
+
+#filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+#filters label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    font-size: 14px;
+    background: #ffffff;
+    padding: 6px 10px;
+    border-radius: 8px;
+
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+
+/* ================================
+   GRID DE PLATAFORMAS
    ================================ */
 
 #plataformas {
@@ -91,11 +137,6 @@ h1 {
     max-width: 1500px;
     margin: 0 auto;
 }
-
-
-/* ================================
-   PLATAFORMAS
-   ================================ */
 
 .plataforma {
     background: #ffffff;
@@ -111,9 +152,8 @@ h1 {
     font-size: 18px;
 }
 
-
 /* ================================
-   FILAS DE CONTENEDORES
+   TARJETAS DE CONTENEDORES
    ================================ */
 
 .fila {
@@ -122,11 +162,6 @@ h1 {
     gap: 6px;
     margin-bottom: 6px;
 }
-
-
-/* ================================
-   TARJETAS (AUMENTADAS A 125%)
-   ================================ */
 
 .card {
     width: 50px;
@@ -142,30 +177,12 @@ h1 {
     color: #fff;
     font-weight: bold;
     text-align: center;
+    line-height: 10px;
 
     box-shadow: 0px 1px 3px rgba(0,0,0,0.2);
-
-    line-height: 10px;
 }
 
-/* ================================
-   TEXTOS CON BORDE NEGRO
-   ================================ */
-/*
 .card .c-label,
-.card .temp,
-.card .ghs,
-.card .pot {
-    -webkit-text-stroke: 0.1px #000;
-    text-stroke: 0.8px #000;
-} */
-
-/* Tamaños de texto */
-.card .c-label {
-    font-size: 9px;
-    margin: 0;
-}
-
 .card .temp {
     font-size: 9px;
     margin: 0;
@@ -178,11 +195,13 @@ h1 {
     margin: 0;
 }
 
+.card .mod {
+    font-size: 7px;
+    opacity: 0.85;
+    margin: 0;
+}
 
-/* ================================
-   TARJETAS FANTASMA
-   ================================ */
-
+/* Tarjetas fantasma */
 .ghost-card {
     width: 50px;
     height: 50px;
@@ -193,12 +212,224 @@ h1 {
     pointer-events: none !important;
 }
 
+/* Texto oscuro sobre fondos claros */
+.dark-text {
+    color: #4A4A4A !important;
+}
+
+.dark-text * {
+    color: #4A4A4A !important;
+}
+
+/* ================================
+   LOGIN MODAL
+   ================================ */
+
+.login-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.login-container {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-container h2 {
+    text-align: center;
+    color: #1d3b70;
+    margin-bottom: 30px;
+    font-size: 24px;
+}
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#login-form input {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+#login-form input:focus {
+    outline: none;
+    border-color: #1e88e5;
+    box-shadow: 0 0 5px rgba(30, 136, 229, 0.3);
+}
+
+#login-form button {
+    padding: 12px;
+    background: #1e88e5;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#login-form button:hover {
+    background: #1565c0;
+}
+
+.login-error {
+    color: #c62828;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* ================================
+   LOGOUT BUTTON
+   ================================ */
+
+.logout-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+}
+
+.logout-btn {
+    padding: 8px 15px;
+    background: #c62828;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.logout-btn:hover {
+    background: #9a1f1f;
+}
+
+/* ================================
+   MODO OSCURO (AUTOMÁTICO)
+   ================================ */
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #1a1a1a;
+        color: #e0e0e0;
+    }
+
+    h1 {
+        color: #64b5f6;
+    }
+
+    .top-bar {
+        border-bottom: 1px solid #333;
+    }
+
+    .login-container {
+        background: #2a2a2a;
+        color: #e0e0e0;
+    }
+
+    .login-container h2 {
+        color: #64b5f6;
+    }
+
+    #login-form input {
+        background: #333;
+        color: #e0e0e0;
+        border-color: #444;
+    }
+
+    #login-form input:focus {
+        border-color: #1e88e5;
+        box-shadow: 0 0 5px rgba(30, 136, 229, 0.3);
+    }
+
+    #ultima-lectura {
+        background: #2a2a2a;
+        color: #e0e0e0;
+        box-shadow: 0px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    #filters label {
+        background: #2a2a2a;
+        color: #e0e0e0;
+        box-shadow: 0px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    #filters label:hover {
+        background: #333;
+    }
+
+    .plataforma {
+        background: #2a2a2a;
+        color: #e0e0e0;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.4);
+    }
+
+    .plataforma h2 {
+        color: #64b5f6;
+    }
+
+    .potencia-total {
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.4);
+    }
+
+    .potencia-azul {
+        background: #1565c0;
+    }
+
+    .potencia-verde {
+        background: #1b5e20;
+    }
+
+    .potencia-rojo {
+        background: #b71c1c;
+    }
+
+    .card {
+        box-shadow: 0px 1px 3px rgba(0,0,0,0.4);
+        filter: brightness(0.9);
+    }
+}
 
 /* ================================
    RESPONSIVE (MÓVIL)
    ================================ */
 
 @media (max-width: 900px) {
+
+    .top-bar {
+        flex-direction: column;
+    }
+
+    /* KPI debajo de última lectura, en grid fluido */
+    .header-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        width: 100%;
+    }
+
+    .potencia-total {
+        width: 100%;
+        min-width: unset;
+    }
 
     #plataformas {
         grid-template-columns: 1fr;
@@ -213,11 +444,7 @@ h1 {
         flex-wrap: wrap;
     }
 
-    .card {
-        width: 44px;
-        height: 44px;
-    }
-
+    .card,
     .ghost-card {
         width: 44px;
         height: 44px;
@@ -231,177 +458,6 @@ h1 {
     .card .ghs,
     .card .pot {
         font-size: 7px;
-    }
-}
-
-
-/* ================================
-   ÚLTIMA LECTURA
-   ================================ */
-
-#ultima-lectura {
-    font-size: 16px;
-    color: #333;
-    background: #ffffff;
-    padding: 6px 12px;
-    border-radius: 8px;
-    display: inline-block;
-    margin-bottom: 15px;
-    box-shadow: 0px 2px 4px rgba(0,0,0,0.15);
-}
-.dark-text {
-    color: #4A4A4A !important;
-}
-
-.dark-text .c-label,
-.dark-text .temp,
-.dark-text .ghs,
-.dark-text .pot {
-    color: #4A4A4A !important;
-}
-/* ================================
-   HEADER + TARJETAS KPI
-   ================================ */
-
-.header-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-
-    width: 100%;
-    max-width: 1500px;
-    margin: 0 auto 10px auto;
-}
-
-/* contenedor de tarjetas */
-.header-cards {
-    display: flex;
-    gap: 12px;
-}
-
-/* evita que el h1 rompa el layout */
-.header-bar h1 {
-    margin-bottom: 0;
-    flex: 1;
-}
-
-/* tarjeta tipo KPI */
-.potencia-total {
-    min-width: 200px;
-    padding: 12px 16px;
-    border-radius: 12px;
-
-    color: #ffffff;
-    text-align: center;
-
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
-}
-
-/* textos internos */
-.potencia-total .pot-title {
-    font-size: 14px;
-    opacity: 0.9;
-}
-
-.potencia-total .pot-value {
-    font-size: 26px;
-    font-weight: bold;
-    margin-top: 4px;
-}
-
-/* colores */
-.potencia-azul  { background: #1e88e5; }
-.potencia-verde { background: #2e7d32; }
-.potencia-rojo  { background: #c62828; }
-
-/* responsive */
-@media (max-width: 900px) {
-    .header-bar {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .header-cards {
-        width: 100%;
-    }
-
-    .potencia-total {
-        width: 100%;
-    }
-}
-/* ================================
-   TEXTO MODULADOS (MOD)
-   ================================ */
-
-.card .mod {
-    font-size: 7px;       /* apenas más chico que ONL */
-    opacity: 0.85;
-    margin: 0;
-}
-/* ================================
-   TOP BAR (HEADER PRINCIPAL)
-   ================================ */
-
-.top-bar {
-    display: flex;
-    align-items: stretch;   /* 🔑 misma altura */
-    justify-content: space-between;
-    gap: 20px;
-
-    width: 100%;
-    max-width: 1500px;
-    margin: 0 auto 20px auto;
-}
-
-/* Lado izquierdo */
-.top-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* centra verticalmente */
-}
-
-.top-left h1 {
-    margin: 0;
-}
-
-#ultima-lectura {
-    margin-top: 8px;
-}
-.top-right {
-    display: flex;
-    align-items: stretch;   /* 🔑 mismas alturas */
-}
-
-.header-cards {
-    display: flex;
-    gap: 12px;
-}
-
-.potencia-total {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-@media (max-width: 900px) {
-
-    .top-bar {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .top-left {
-        align-items: flex-start;
-    }
-
-    .header-cards {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .potencia-total {
-        width: 100%;
-        min-width: unset;
     }
 }
 
